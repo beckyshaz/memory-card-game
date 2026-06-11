@@ -12,7 +12,7 @@ import { shuffleCards } from "./shuffle";
 
     useEffect(() => {
 
-        fetch(url).then((response) => response.json())
+       /* fetch(url).then((response) => response.json())
         .then((results) => {
             Promise.all(results.results.map((data) => {
                 
@@ -23,24 +23,22 @@ import { shuffleCards } from "./shuffle";
                 setData(shuffled); 
 
             })
-        })
+        })*/
 
-        /*const load = async() => {
+        const load = async() => {
             const list = await  fetch(url).then((response) => response.json());
             
             const promiseArray = list.results.map((pokemon) => {
-                return  fetch(pokemon.url).then((response) => response.json());
+                fetch(pokemon.url).then((response) => response.json());
             })
             
-            Promise.all(promiseArray).then((res) => {
-            const shuffled = shuffleCards(res);
-            setData(shuffled); 
-         })
-
+           const res = await Promise.all(promiseArray);
+           const shuffled = shuffleCards(res);
+            setData(shuffled);
             
             
         }
-       load();*/
+       load();
            
        }, []);
 
