@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 
+import { shuffleCards } from "./shuffle";
+
  export function GetImages() {
     const url = "https://pokeapi.co/api/v2/pokemon";
-    const [results, setResults] = useState([]);
     const [data, setData] = useState([]);
     const [selectedCard, setSelectedCard] = useState([]);
     const [score, setScore] = useState(0);
@@ -11,23 +12,39 @@ import { useState, useEffect } from "react";
 
     useEffect(() => {
 
-        fetch(url)
-        .then((response) => (response.json()))
-        .then((res) => {
-            setResults(res.results)
+        fetch(url).then((response) => response.json())
+        .then((results) => {
+            Promise.all(results.results.map((data) => {
+                
+                return  fetch(data.url).then((response) => response.json());
 
-        });
-    }, []);
+            })).then((res) => {
+                const shuffled = shuffleCards(res);
+                setData(shuffled); 
 
-    useEffect(() => {
-        Promise.all(results.map((pokemon) => {
-            return fetch(pokemon.url)
-            .then((response) => response.json())
-             })).then((res) => setData(res))
+            })
+        })
+
+        /*const load = async() => {
+            const list = await  fetch(url).then((response) => response.json());
+            
+            const promiseArray = list.results.map((pokemon) => {
+                return  fetch(pokemon.url).then((response) => response.json());
+            })
+            
+            Promise.all(promiseArray).then((res) => {
+            const shuffled = shuffleCards(res);
+            setData(shuffled); 
+         })
+
+            
+            
+        }
+       load();*/
            
-       }, [results]);
+       }, []);
 
-    
+
     const handleDivClick =  (id) => {
 
         const cards = [...selectedCard];
@@ -47,19 +64,7 @@ import { useState, useEffect } from "react";
             setBestScore((best) => Math.max(best, score));
             
         }
-        
-    
-        setData((data) => {
-            const prevData = [...data];
-        
-            for (let i = prevData.length - 1; i > 0; i-- ) {
-                const j = Math.floor(Math.random() * (i + 1));
-
-                [prevData[i], prevData[j]] =  [prevData[j], prevData[i]]
-            }
-           
-            return prevData;
-        });
+        setData((prev) => shuffleCards(prev));
 
     }
    
@@ -69,7 +74,7 @@ import { useState, useEffect } from "react";
         <div className="container">
             <div className="headingDiv">
                 <h1>Pokemon Card Memory Game</h1>
-                <p>Pick a card once to get a score</p>
+                <p>Pick a card once to get a score!</p>
             </div>
             <div className="scoreDiv">
                 <div className="score">Score: <span>{score}</span></div>
@@ -80,7 +85,7 @@ import { useState, useEffect } from "react";
         {data.map((pokemon) => {
             return <div key={pokemon.id} className={`${pokemon.name} pokemon`} onClick={() => handleDivClick(pokemon.id)}>
                 <p>{pokemon.name}</p>
-                <img src={pokemon.sprites.front_default} alt={`pokemon ${pokemon.name} sprites`} width={200} />
+                <img src={pokemon.sprites.front_default} alt={`pokemon ${pokemon.name} sprites`} width={200} className="image"/>
             </div>
         })}
         </div>

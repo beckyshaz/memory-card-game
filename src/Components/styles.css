@@ -4,18 +4,16 @@
     padding: 0;
 }
 
-body {
-   background-color: gray;
-}
 
 .app-container {
-    background-color: darkgray;
+    background-color: gray;
 
 }
 
 .container {
     display: flex;
     justify-content: space-between;
+    padding: 3em;
 }
 
 .headingDiv {
@@ -23,13 +21,19 @@ body {
     display: flex;
     flex-direction: column;
     padding-bottom: 1em;
-    padding-left: 1em;
+    
+}
+
+.headingDiv h1 {
+    color: goldenrod;
+    font-size: 3em;
 }
 
 .headingDiv p {
     align-self: flex-start;
     font-weight: bold;
-    color: papayawhip;
+    color: black;
+    font-size: 1.5em;
 }
 
 .scoreDiv {
@@ -45,33 +49,52 @@ body {
 
 .score, .best-score {
     font-weight: bold;
-    color: papayawhip;
+    font-size: 1.5em;
+    color: goldenrod;
 }
 
-.score span {
+.score span, .best-score span{
     color: black;
 }
 
-.best-score span {
-    color: black;
-}
 
 .pokemon-outer-container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 30px;
     padding: 1em;
-    background-color: gray;
+    background-color: rgb(46, 44, 44);
     
 }
 
 .pokemon {
-    background-color: burlywood;
-    border: 2px solid red;
-    padding: 1em;
+    
+    border: 2px solid goldenrod;
+    /*padding: 1em;*/
     border-radius: 10px;
+    text-align: center;
 }
 
 .pokemon:hover {
     box-shadow: 2px 1px 1px 2px goldenrod;
+}
+
+.pokemon p{
+    background-color: rgb(160, 116, 6);
+    width: 100%;
+    padding: 2em;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    font-size: 1.5em;
+    
+}
+
+.pokemon .image {
+    background-color: gray;
+    display: block;
+    width: 100%;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    margin: 0 auto;
+    
 }
